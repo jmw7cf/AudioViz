@@ -165,7 +165,8 @@ public class PlayerController implements Initializable {
     
     private void handleReady() {
         Duration duration = mediaPlayer.getTotalDuration();
-        lengthText.setText(duration.toString());
+        System.out.println("Duration: " + duration);
+        lengthText.setText(String.format("%.1f ms", duration.toMillis()));
         Duration ct = mediaPlayer.getCurrentTime();
         currentText.setText(ct.toString());
         currentVisualizer.start(numBands, vizPane);
@@ -181,8 +182,10 @@ public class PlayerController implements Initializable {
     
     private void handleUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
         Duration ct = mediaPlayer.getCurrentTime();
+        System.out.println("current time " + ct);
         double ms = ct.toMillis();
-        currentText.setText(Double.toString(ms));
+        System.out.println("conversion to milis " + ct);
+        currentText.setText(String.format("%.1f ms", ms));
         timeSlider.setValue(ms);
         
         currentVisualizer.update(timestamp, duration, magnitudes, phases);
@@ -230,7 +233,7 @@ public class PlayerController implements Initializable {
     private void handleSliderMouseReleased(Event event) {
         if (mediaPlayer != null) {
             mediaPlayer.seek(new Duration(timeSlider.getValue()));
-            System.out.println(timeSlider.getValue());
+//            System.out.println(timeSlider.getValue());
             currentVisualizer.start(numBands, vizPane);
             mediaPlayer.play();
         }  
